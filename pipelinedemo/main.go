@@ -1,22 +1,24 @@
 package main
 
 import (
+	"bufio"
 	"fmt"
 	"go-sort-pipeline/pipeline"
 	"os"
 )
 
 func main()  {
-	const filename = "large.in"
-	const n = 10000000
+	const filename = "small.in"
+	const n = 64
 	file, err := os.Create(filename)
 	if err != nil {
 		panic(err)
 	}
 	defer file.Close()
-
+	writer := bufio.NewWriter(file)
 	p := pipeline.RandomSource(n)
-	pipeline.WriterSink(file, p)
+	pipeline.WriterSink(writer, p)
+	writer.Flush()
 
 	file, err = os.Open(filename)
 	if err != nil {
@@ -24,7 +26,7 @@ func main()  {
 	}
 	defer file.Close()
 
-	p = pipeline.ReaderSource(file)
+	p = pipeline.ReaderSource(bufio.NewReader(file), -1)
 	count := 0
 	for v := range p {
 		if count >= 100 {
@@ -33,7 +35,6 @@ func main()  {
 		fmt.Println(v)
 		count ++
 	}
-
 }
 
 func mergeDemo()  {
