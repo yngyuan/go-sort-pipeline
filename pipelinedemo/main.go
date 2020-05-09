@@ -8,7 +8,7 @@ import (
 )
 
 func main()  {
-	const filename = "small.in"
+	const filename = "sort.in"
 	const n = 64
 	file, err := os.Create(filename)
 	if err != nil {
