@@ -8,8 +8,10 @@ The external sorting pipeline goes like this. We divide the original file into 4
 
 ## 2. distributed external sorting pipline
 There could be times that we cannot even store data on one machine. So we develop the pipline to a distributed one.
+
 InMemSort --> Writer Sink ========> Reader Source --> Merge
-              (4 nodes     network                    receive 4 server
-              to 4 Server)        
+                            network
+              (4 nodes to 4 Server)                 receive 4 server
+                     
 
 
