@@ -10,6 +10,7 @@ import (
 
 func main()  {
 	// TODO handle case when filesize%chunkCount != 0
+	// here we divide the file of 512 bytes to 4 parts
 	p := createNetworkPipeline("sort.in", 512, 4)
 	writeToFile(p, "sort.out")
 	printFile("sort.out")
@@ -43,9 +44,9 @@ func writeToFile(p <-chan int, filename string)  {
 
 func createPipeline(
 	filename string,
-	filesize,
+	fileSize,
 	chunkCount int) <-chan int  {
-	chunkSize := filesize/ chunkCount
+	chunkSize := fileSize/ chunkCount
 	pipeline.Init()
 
 	sortResults := []<-chan int{}

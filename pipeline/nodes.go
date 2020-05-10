@@ -17,6 +17,7 @@ func Init()  {
 
 func ArraySource( a ...int) <-chan int {
 	out := make(chan int)
+	// use go routine
 	go func() {
 		for _,v := range a {
 			out <- v
@@ -50,13 +51,15 @@ func InMemSort(in <-chan int) <-chan int {
 func Merge( in1, in2 <-chan int) <- chan int {
 	out := make(chan int)
 	go func() {
+		// two channels could have different size of data
+		// so we must check if channel is ok
 		v1, ok1 := <-in1
 		v2, ok2 := <-in2
 		for ok1 || ok2 {
 			if !ok2 || (ok1 && v1<=v2) {
 				out <- v1
 				v1, ok1 = <- in1
-			} else{
+			} else {
 				out <- v2
 				v2, ok2 = <- in2
 			}
@@ -67,6 +70,7 @@ func Merge( in1, in2 <-chan int) <- chan int {
 	return out
 }
 
+//ReaderSource use chunkSize to control the size to read
 func ReaderSource(reader io.Reader,
 	chunkSize int) <- chan int {
 	out := make(chan int)
@@ -98,6 +102,7 @@ func WriterSink(writer io.Writer, in <- chan int) {
 	}
 }
 
+//RandomSource Generate random number
 func RandomSource(count int) <- chan int {
 	out := make(chan int)
 	go func() {
@@ -109,6 +114,7 @@ func RandomSource(count int) <- chan int {
 	return out
 }
 
+//MergeN Merge n inputs
 func MergeN(inputs ...<- chan int) <-chan int {
 	if len(inputs) == 1 {
 		return inputs[0]

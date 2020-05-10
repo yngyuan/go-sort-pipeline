@@ -13,6 +13,7 @@ func NetworkSink(addr string, in <-chan int) {
 
 	go func() {
 		defer listener.Close()
+		// wait for connection
 		conn, err := listener.Accept()
 		if err!=nil{
 			panic(err)
